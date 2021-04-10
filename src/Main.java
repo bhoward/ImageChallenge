@@ -25,7 +25,8 @@ public class Main {
 
       canvas.addImage(Image.ellipse(0, 0, 1, 1, Color.RED));
       
-      // Uncomment the following lines when done to make a picture:
+      // Comment out the above line, and
+      // uncomment the following lines when done to make a picture:
       // canvas.addImage(Image.rectangle(0, 0, 1, 1, Color.DARK_GRAY));
       // canvas.addImage(Image.rectangle(0, 0.8, 1, 0.2, Color.BLACK));
       // canvas.addImage(Image.ellipse(0.1, 0.1, 0.2, 0.2, Color.WHITE));

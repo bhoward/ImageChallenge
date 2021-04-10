@@ -38,8 +38,8 @@ public interface Image {
     * @return the shifted image
     */
    default Image shifted(double dx, double dy) {
-	  // TODO fill this in when you have a ShiftedImage class
-      return null;
+	  // TODO change this in when you have a ShiftedImage class
+      return this;
    }
 
    /**
