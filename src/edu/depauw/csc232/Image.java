@@ -38,7 +38,8 @@ public interface Image {
     * @return the shifted image
     */
    default Image shifted(double dx, double dy) {
-      return new ShiftedImage(this, dx, dy);
+	  // TODO fill this in when you have a ShiftedImage class
+      return null;
    }
 
    /**
@@ -65,7 +66,8 @@ public interface Image {
     * @return the rectangle image
     */
    static Image rectangle(double x, double y, double w, double h, Color color) {
-      return new Square(color).scaled(w, h).shifted(x, y);
+	  // TODO fill this in when you have a Square class
+      return null;
    }
 
    /**
