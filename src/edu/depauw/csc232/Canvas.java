@@ -5,16 +5,15 @@
 //
 // Acknowledgements: None
 //
-// Online sources:   Bug workaround thanks to
-//                   https://stackoverflow.com/questions/30861201
-//                   (why is java awt graphics drawline exceptionally slow)
+// Online sources:   Faster image drawing thanks to
+//    https://stackoverflow.com/questions/14859593/java-basic-plotting-drawing-a-point-dot-pixel
 ////////////////////////////////////////////////////////////////////////////////
 
 package edu.depauw.csc232;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -27,48 +26,47 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("serial")
 public class Canvas extends JPanel {
-   private ArrayList<Image> images;
+	private ArrayList<Image> images;
 
-   /**
-    * Construct a Canvas with an empty list of Images.
-    */
-   public Canvas() {
-      images = new ArrayList<Image>();
-   }
+	/**
+	 * Construct a Canvas with an empty list of Images.
+	 */
+	public Canvas() {
+		images = new ArrayList<Image>();
+	}
 
-   /** Add an image to be drawn on top of the canvas. */
-   public void addImage(Image s) {
-      images.add(s);
-   }
+	/** Add an image to be drawn on top of the canvas. */
+	public void addImage(Image s) {
+		images.add(s);
+	}
 
-   @Override
-   public void paint(Graphics g) {
-      // The following two lines work around a bug in Java on Windows. Don't ask.
-      Graphics2D g2 = (Graphics2D) g;
-      g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-      
-      drawImages(g);
-   }
+	@Override
+	public void paint(Graphics g) {
+		drawImages(g);
+	}
 
-   /* draw all of the images on the canvas in the specified graphics context */
-   private void drawImages(Graphics g) {
-      for (Image image : images) {
-         drawImage(g, image);
-      }
-   }
+	/* draw all of the images on the canvas in the specified graphics context */
+	private void drawImages(Graphics g) {
+		for (Image image : images) {
+			drawImage(g, image);
+		}
+	}
 
-   /* draw the specified image onto the specified graphics context */
-   private void drawImage(Graphics g, Image image) {
-      int height = this.getHeight();
-      int width = this.getWidth();
+	/* draw the specified image onto the specified graphics context */
+	private void drawImage(Graphics g, Image image) {
+		int height = this.getHeight();
+		int width = this.getWidth();
 
-      for (int i = 0; i < width; i++) {
-         double x = (double) i / width; // x ranges from 0.0 to 1.0
-         for (int j = 0; j < height; j++) {
-            double y = (double) j / height; // y ranges from 0.0 to 1.0
-            g.setColor(image.colorAt(x, y));
-            g.drawLine(i, j, i, j); // draw a point
-         }
-      }
-   }
+		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+		for (int i = 0; i < width; i++) {
+			double x = (double) i / width; // x ranges from 0.0 to 1.0
+			for (int j = 0; j < height; j++) {
+				double y = (double) j / height; // y ranges from 0.0 to 1.0
+				img.setRGB(i, j, image.colorAt(x, y).getRGB());
+			}
+		}
+
+		((Graphics2D) g).drawImage(img, 0, 0, null);
+	}
 }
